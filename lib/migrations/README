@@ -1,1 +1,54 @@
-Generic single-database configuration.
+# Freebie Tracker
+
+This project is a Freebie Tracker application that manages companies, developers (devs), and freebies given by companies to devs. It uses a relational database to store information about these entities and their relationships.
+
+## Entities and Relationships
+
+The application models three main entities:
+
+- **Company**: Represents a company that can give freebies to developers. Each company has an ID, name, and founding year.
+- **Dev**: Represents a developer who can receive freebies from companies. Each dev has an ID and a name.
+- **Freebie**: Represents a free item given by a company to a developer. Each freebie has an ID, item name, value, and foreign keys linking it to a dev and a company.
+
+### Relationships
+
+- A **Company** can give many **Freebies** (one-to-many).
+- A **Dev** can receive many **Freebies** (one-to-many).
+- There is a many-to-many relationship between **Company** and **Dev** through the **Freebie** association.
+
+## Entity Relationship Diagram (ERD)
+
+```
++----------------+          +----------------+          +----------------+
+|    Company     |          |    Freebie     |          |      Dev       |
++----------------+          +----------------+          +----------------+
+| id (PK)        |1        *| id (PK)        |*        1| id (PK)        |
+| name           |----------| item_name      |----------| name           |
+| founding_year  |          | value          |          |                |
++----------------+          | dev_id (FK)    |          +----------------+
+                            | company_id (FK)|
+                            +----------------+
+```
+
+- The lines indicate relationships:
+  - One Company can have many Freebies.
+  - One Dev can have many Freebies.
+  - Freebie acts as a join table linking Companies and Devs.
+
+## Usage
+
+The application allows you to:
+
+- Track companies and their founding years.
+- Track developers.
+- Record freebies given by companies to developers.
+- Query relationships such as which freebies a dev has received or which devs a company has given freebies to.
+
+## Example Methods
+
+- `Company.oldest_company(session)`: Returns the oldest company by founding year.
+- `Company.give_freebie(session, dev, item_name, value)`: Company gives a freebie to a dev.
+- `Dev.received_one(item_name)`: Checks if a dev has received a specific item.
+- `Dev.give_away(session, dev, freebie)`: Dev gives away a freebie to another dev.
+
+---
